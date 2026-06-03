@@ -5,30 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest Registration</title>
     <style>
-        /* General Layout */
         body { 
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; min-height: 100vh; 
+            justify-content: flex-start; min-height: 100vh; 
             background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); 
-            color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff; font-family: 'Segoe UI', sans-serif;
             text-align: center;
         }
 
-        /* Container for Text */
+        /* Header moved up with margin-top */
         #container { 
-            background: rgba(255, 255, 255, 0.1); padding: 25px; 
+            background: rgba(255, 255, 255, 0.1); padding: 20px; margin-top: 20px;
             border-radius: 20px; width: 85%; backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        h1 { font-size: 2.2rem; margin-bottom: 15px; color: #f1c40f; }
-        #dateTime { font-size: 1.2rem; margin: 10px 0; color: #ecf0f1; }
-        #nextDate { font-size: 1.3rem; font-weight: bold; color: #2ecc71; margin-top: 10px; }
+        /* Developer Name Box */
+        #devContainer {
+            background: rgba(241, 196, 15, 0.2); 
+            padding: 10px; margin: 15px 0; border-radius: 12px;
+            border: 1px solid #f1c40f; color: #f1c40f;
+            width: 85%; font-weight: bold; font-size: 0.9rem;
+        }
 
-        /* Video Styles */
+        h1 { font-size: 2rem; margin: 5px 0; color: #f1c40f; }
+        #dateTime { font-size: 1.1rem; margin: 5px 0; }
+        #nextDate { font-size: 1.2rem; font-weight: bold; color: #2ecc71; margin-top: 5px; }
+
         video { 
             width: 90%; max-width: 450px; border-radius: 20px; 
-            border: 4px solid #ffffff; margin-top: 25px; cursor: pointer;
+            border: 4px solid #ffffff; margin-top: 10px; cursor: pointer;
         }
     </style>
 </head>
@@ -40,13 +46,15 @@
         <div id="nextDate">Loading...</div>
     </div>
 
+    <div id="devContainer">
+        Developed by Zwe Maung Maung
+    </div>
+
     <video id="myVideo" loop playsinline controls>
         <source src="my_video.mp4" type="video/mp4">
-        Your browser does not support the video.
     </video>
 
     <script>
-        // Screen ကိုနှိပ်ရင် Video အသံထွက်လာအောင်
         function playVideo() {
             var video = document.getElementById("myVideo");
             if (video.paused) { video.play(); }
@@ -57,14 +65,11 @@
             const year = now.getFullYear();
             const month = now.getMonth();
             
-            // Format time display
             document.getElementById('dateTime').innerText = now.toDateString() + " | " + now.toLocaleTimeString();
 
-            // Calculate next registration date
             const lastDayOfThisMonth = new Date(year, month + 1, 0).getDate();
             const day = now.getDate();
             
-            let nextDateText = "";
             let targetDay, targetMonth, targetYear;
 
             if (day <= 15) {
@@ -81,12 +86,9 @@
                 targetYear = (month === 11) ? year + 1 : year;
             }
 
-            // String formatting to 06, 07 format
             const d = targetDay.toString().padStart(2, '0');
             const m = targetMonth.toString().padStart(2, '0');
-            nextDateText = "Next Registration: " + d + "." + m + "." + targetYear;
-            
-            document.getElementById('nextDate').innerText = nextDateText;
+            document.getElementById('nextDate').innerText = "Next Registration: " + d + "." + m + "." + targetYear;
         }
         
         setInterval(updateTime, 1000);
