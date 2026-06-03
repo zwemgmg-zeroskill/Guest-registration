@@ -7,39 +7,51 @@
     <style>
         body { 
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%); 
+            justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); 
             color: white; font-family: sans-serif;
         }
-        #dateTimeContainer { 
-            background: rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 20px; 
-            margin-bottom: 20px; text-align: center; width: 85%; backdrop-filter: blur(10px);
-        }
-        video { 
-            width: 90%; max-width: 450px; border-radius: 20px; 
-            border: 4px solid rgba(255, 255, 255, 0.5);
-        }
+        #container { background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 20px; text-align: center; width: 85%; backdrop-filter: blur(10px); }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: #f1c40f; }
+        #dateTime, #nextDate { font-size: 1.2rem; margin: 5px 0; }
+        video { width: 90%; max-width: 450px; border-radius: 20px; border: 4px solid #fff; margin-top: 20px; }
     </style>
 </head>
-<body onclick="enableSound()"> <div id="dateTimeContainer">
-        <h2>Guest Registration</h2>
+<body onclick="playVideo()">
+
+    <div id="container">
+        <h1>ဧည့်စာရင်းတိုင်ရန်</h1>
         <div id="dateTime">Loading...</div>
+        <div id="nextDate" style="color: #2ecc71; font-weight: bold;"></div>
     </div>
 
-    <video id="myVideo" autoplay loop playsinline>
+    <video id="myVideo" loop playsinline controls>
         <source src="my_video.mp4" type="video/mp4">
     </video>
 
     <script>
-        // အသံထွက်အောင် ပထမဆုံး screen ကို နှိပ်ခိုင်းတဲ့ function
-        function enableSound() {
+        function playVideo() {
             var video = document.getElementById("myVideo");
-            video.muted = false; 
+            if (video.paused) { video.play(); }
         }
 
         function updateTime() {
             const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            document.getElementById('dateTime').innerText = now.toLocaleDateString('en-US', options);
+            document.getElementById('dateTime').innerText = now.toDateString() + " | " + now.toLocaleTimeString();
+
+            // နောက်တစ်ကြိမ် တိုင်ရမည့်ရက် တွက်ချက်ခြင်း
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            
+            let nextDateText = "";
+            if (now.getDate() < 15) {
+                nextDateText = "Next Registration: 15th of this month";
+            } else if (now.getDate() < lastDay) {
+                nextDateText = "Next Registration: " + lastDay + "th of this month";
+            } else {
+                nextDateText = "Next Registration: 15th of next month";
+            }
+            document.getElementById('nextDate').innerText = nextDateText;
         }
         
         setInterval(updateTime, 1000);
@@ -47,4 +59,3 @@
     </script>
 </body>
 </html>
-
